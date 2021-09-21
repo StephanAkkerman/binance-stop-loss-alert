@@ -6,6 +6,6 @@
 # Note
 This works for all Binance trading platforms, except isolated margin.
 
-# When does it send a message
+# When does it send a message?
 If a sell order has been filled that is not a market sell order, the user socket will notice this and sends a message via Telegram.
 So it works for Limit, Stop Limit and OCO.
