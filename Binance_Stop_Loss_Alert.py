@@ -45,10 +45,7 @@ def userInfo(info_string, stream_buffer_name=False):
 
     # Convert info from string to dict
     info = json.loads(info_string)
-
     operation = info.get("e")
-
-    print(info)
 
     # Other operations are balanceUpdate and outboundAccountInfo
     if operation == "executionReport":
