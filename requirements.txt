@@ -1,0 +1,2 @@
+unicorn_binance_websocket_api==1.34.0
+requests==2.26.0
