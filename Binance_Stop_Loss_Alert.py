@@ -18,6 +18,7 @@ private_key = binance_keys.private_key
 bot_token = binance_keys.bot_token
 send_to = binance_keys.send_to
 
+sent = []
 
 def sendSellAlert(bot_message):
     """ 
@@ -39,6 +40,9 @@ def sendSellAlert(bot_message):
     )
     response = requests.get(send_text)
 
+def clearSent():
+    """ Removes symbol from sent list """
+    sent.pop(0)
 
 def userInfo(info_string, stream_buffer_name=False):
     """ Getting user data, through ubwa_user, sends a message if an asset has been sold except for market orders """
@@ -65,10 +69,14 @@ def userInfo(info_string, stream_buffer_name=False):
 
                 # Send a message if it is not a market order
                 if orderType != "MARKET":
-                    msgPrice = round(float(execPrice), 4)
-                    msg = " ".join([orderType, "sold", sym, "$" + str(msgPrice)])
-                    sendSellAlert(msg)
+                    if sym not in sent:
+                        msgPrice = round(float(execPrice), 4)
+                        msg = " ".join([orderType, "sold", sym, "$" + str(msgPrice)])
+                        sendSellAlert(msg)
+                        sent.append(sym)
 
+                        # Remove after 60 sec
+                        threading.Timer(60.0, clearLow).start()
 
 if __name__ == "__main__":
     # Start the sockets
@@ -106,6 +114,3 @@ if __name__ == "__main__":
     coin_futures_user.create_stream(
         "arr", "!userData", api_key=public_key, api_secret=private_key
     )
-
-# TODO
-# Fix reconnect?
