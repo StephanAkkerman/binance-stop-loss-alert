@@ -77,7 +77,7 @@ def userInfo(info_string, stream_buffer_name=False):
                             sent.append(sym)
 
                             # Remove after 60 sec
-                            threading.Timer(60.0, clearLow).start()
+                            threading.Timer(60.0, clearSent).start()
 
     except Exception  as e:
         print(e)
